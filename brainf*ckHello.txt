@@ -1,0 +1,45 @@
+This is a sample program that will output hello using the brainfuck language:
+
+> - Shift instruction pointer right
+< - Shift instruction pointer left
++ - Increase value at the instruction pointer
+- - Decrease value at the instruction
+. - Output the character stored at the pointer location 
+, - Input the character stored at  the pointer location
+[ - Jump past the matching ] if the value stored at the current pointer is 0
+] - Jump back to the matching [ if the value stored at the current pointer is nonzero
+
+* All other symbols are seen as comments and are ignored
+
+
+Printing "Hello!":
+
+We could brute force this by incrementing each cell to its corresponding char value and output. This would be a lot of work and would not look clean in practice.
+What we can do instead is get "close" then modify the cells at those locations to get the output that we want.
+
+
+We start with a loop that estimates where we want our cells to be close to when we print out our values
+
++++++++++
+[
+ >++++++++ //9*8 = 72
+ >+++++++++++ //9*11 = 99
+ >++++ //9*4 = 36
+ <<<-
+]
+
+Here we are back at cell 0 with the following values
+
+index 0  1  2  3
+value 0  72 108 36
+
+And can execute the following
+>. // outputs H
+>++. // outputs e
++++++++.. //outputs ll
++++. //outputs o
+>---. //outputs !
+
+
+Running this will output Hello! and completes our program
+
