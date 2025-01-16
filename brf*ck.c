@@ -1,36 +1,54 @@
+#include "stack.c"
+#include "stack.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 int interpret(FILE *file) {
-  int instructionNumber = 0;
   int tape[30000];
-  int instruction = 0;
+  int stackPointer = 0;
+  int instructionPointer = 0;
+  bool executeBit = true;
   unsigned int currChar;
+  LinkedStack stack;
+  stackInit(&stack);
 
   while ((currChar = fgetc(file) != EOF)) {
+    if (!executeBit) {
+      if (tape[stackPointer] == ']') {
+        executeBit = true;
+      }
+      continue;
+    }
     switch (currChar) {
     case '+':
-      tape[instruction]++;
-
+      tape[stackPointer]++;
     case '-':
-      tape[instruction]--;
+      tape[stackPointer]--;
     case '>':
-      instruction++;
+      stackPointer++;
     case '<':
-      instruction--;
-      if (instruction < 0) {
-        printf("Error at symbol %d: out of bounds error", instructionNumber);
+      stackPointer--;
+      if (stackPointer < 0) {
+        printf("Error at symbol: out of bounds error");
       }
-
     case '[':
-      printf("TODO");
+      if (tape[stackPointer] == 0) {
+        executeBit = false;
+      } else {
+      }
     case ']':
       printf("TODO");
-
     case ',':
-      printf("TODO");
+      printf("Enter a character:");
+      unsigned int newChar = getchar();
+      tape[stackPointer] = newChar;
     case '.':
-      printf("TODO");
+      if (tape[stackPointer] <= 0x10FFFF) {
+        putchar(tape[stackPointer]);
+      } else {
+        printf("current value out of range to output character");
+      }
     }
   }
 

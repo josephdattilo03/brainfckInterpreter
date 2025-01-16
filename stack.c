@@ -2,10 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
-  int start;
-  int end;
-  struct Node *next;
+typedef struct StackNode {
+  int value;
+  struct StackNode *next;
 } LinkedNode;
 
 typedef struct Stack {
@@ -14,23 +13,26 @@ typedef struct Stack {
 
 void stackInit(LinkedStack *stack) { stack->top = NULL; }
 
-void stackAdd(LinkedStack *stack, int start, int end) {
+void stackAdd(LinkedStack *stack, int value) {
   LinkedNode *newNode = (LinkedNode *)malloc(sizeof(LinkedNode));
   if (!newNode) {
     printf("failed to allocate space for a node");
   }
-  newNode->start = start;
-  newNode->end = end;
+  newNode->value = value;
   newNode->next = stack->top;
   stack->top = newNode;
 }
 
-void stackPop(LinkedStack *stack, int *newStart, int *newEnd) {
+int stackPop(LinkedStack *stack) {
+  if (stack->top == NULL) {
+    printf("The stack is already empty");
+    return -1;
+  }
   LinkedNode *temp = stack->top;
+  int val = temp->value;
   stack->top = stack->top->next;
-  newStart = &temp->start;
-  newEnd = &temp->end;
   free(temp);
+  return val;
 }
 
 void freeStack(struct Stack *stack) {
@@ -40,4 +42,5 @@ void freeStack(struct Stack *stack) {
     free(currNode);
     currNode = nextNode;
   }
+  stack->top = NULL;
 }
