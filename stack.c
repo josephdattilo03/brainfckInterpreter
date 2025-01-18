@@ -17,6 +17,7 @@ void stackAdd(LinkedStack *stack, int value) {
   LinkedNode *newNode = (LinkedNode *)malloc(sizeof(LinkedNode));
   if (!newNode) {
     printf("failed to allocate space for a node");
+    exit(EXIT_FAILURE);
   }
   newNode->value = value;
   newNode->next = stack->top;
@@ -26,7 +27,7 @@ void stackAdd(LinkedStack *stack, int value) {
 int stackPop(LinkedStack *stack) {
   if (stack->top == NULL) {
     printf("The stack is already empty");
-    return -1;
+    exit(EXIT_FAILURE);
   }
   LinkedNode *temp = stack->top;
   int val = temp->value;

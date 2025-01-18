@@ -1,26 +1,22 @@
 #include "stack.c"
-#include "stack.h"
+#include "vector.c"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-int interpret(FILE *file) {
+void getBracketMap(CharVector *instructions, CharVector *openBrackets,
+                   CharVector *closedBrackets) {
+  // TODO
+}
+
+int interpret(CharVector *instructions) {
   int tape[30000];
   int stackPointer = 0;
   int instructionPointer = 0;
-  bool executeBit = true;
-  unsigned int currChar;
   LinkedStack stack;
   stackInit(&stack);
-
-  while ((currChar = fgetc(file) != EOF)) {
-    if (!executeBit) {
-      if (tape[stackPointer] == ']') {
-        executeBit = true;
-      }
-      continue;
-    }
-    switch (currChar) {
+  while (instructionPointer < instructions->size) {
+    switch (vectorGet(instructions, instructionPointer)) {
     case '+':
       tape[stackPointer]++;
     case '-':
@@ -33,10 +29,7 @@ int interpret(FILE *file) {
         printf("Error at symbol: out of bounds error");
       }
     case '[':
-      if (tape[stackPointer] == 0) {
-        executeBit = false;
-      } else {
-      }
+      printf("todo");
     case ']':
       printf("TODO");
     case ',':
@@ -50,6 +43,7 @@ int interpret(FILE *file) {
         printf("current value out of range to output character");
       }
     }
+    instructionPointer++;
   }
 
   return 0;
